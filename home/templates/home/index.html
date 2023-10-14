@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% load static %}
+{% load render_partial %}
+{% load social_share %}
+{% load filters %}
+{% block title %}home{% endblock %}
+{% block content %}
+    <!-- Page Content -->
+    <!-- Banner Starts Here -->
+
+    <div class="main-banner header-text">
+        <div class="container-fluid">
+            <div class="owl-banner owl-carousel">
+                {% for article in articles %}
+                    <div class="item">
+                        <img src=" {{ article.image.url }} " alt="{{ article.title }}">
+                        <div class="item-content">
+                            <div class="main-content">
+                                <div class="meta-category">
+                                    <span>{{ article.category.first }}-</span>
+                                </div>
+
+                                <a href="{{ article.get_absolute_url }}"><h4>{{ article.title }}</h4></a>
+
+                                <ul class="post-info">
+                                    <li><a href="#"> {{ article.author.username }} </a></li>
+                                    <li><a href="#"> {{ article.created }} </a></li>
+                                    <li><a href="#">12 Comments</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="heading-page header-text">
+    <section class="page-heading">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-content">
+                        <h4 id="current-time"></h4>
+                        <h2>keep going like the clock!</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+    <!-- Banner Ends Here -->
+    <section class="blog-posts">
+    <div class="container">
+    <div class="row">
+
+    <div class="col-lg-8">
+        <div class="all-blog-posts">
+            <div class="row">
+                {% for articles2 in articles2 %}
+                    <div class="col-lg-12">
+
+                        <div class="blog-post">
+                            <div class="blog-thumb">
+
+                                <img src=" {{ articles2.image.url }} " alt="{{ articles2.title }}">
+                            </div>
+                            <div class="down-content">
+                                <span>{{ articles2.category.first }}</span>
+                                <a href="{{ articles2.get_absolute_url }}"><h4>{{ articles2.title }}</h4>
+                                </a>
+                                <ul class="post-info">
+                                    <li><a href="#">{{ articles2.author.username }}</a></li>
+                                    <li><a href="#">{{ articles2.created }}</a></li>
+                                    <li><a href="#">12 Comments</a></li>
+                                </ul>
+                                <p>{{ articles2.body|slice:"300"|cutter:300 }}...</p>
+
+                                <div class="post-options">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <ul class="post-tags">
+                                                <li><i class="fa fa-tags"></i></li>
+                                                {% for articles1 in articles2.category.all %}
+                                                    <li><a href="#">{{ articles1 }}</a>,</li>
+                                                {% endfor %}
+
+                                            </ul>
+                                        </div>
+                                        <div class="col-6">
+                                            <ul class="post-share">
+                                                <li><i class="fa fa-share-alt"></i></li>
+                                                <li>{% post_to_facebook articles.get_absolute_url "facebook" %} </li>
+                                                <li>{% post_to_whatsapp articles.get_absolute_url "whatsapp" %} </li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="col-lg-12">
+                    <div class="main-button">
+                        <a href="{% url "blog:blogs" %}">View All Posts</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    function updateCurrentTime() {
+        var currentTimeElement = document.getElementById('current-time');
+        var now = new Date();
+        var hours = String(now.getHours()).padStart(2, '0');
+        var minutes = String(now.getMinutes()).padStart(2, '0');
+        var seconds = String(now.getSeconds()).padStart(2, '0');
+        var currentTimeString = hours + ':' + minutes + ':' + seconds;
+        currentTimeElement.innerText = currentTimeString;
+    }
+
+    setInterval(updateCurrentTime, 1000);  // Update every second
+</script>
+    {% include 'includes/sidebar.html' %}
+{% endblock %}
+

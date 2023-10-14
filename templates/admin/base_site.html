@@ -1,0 +1,12 @@
+{% extends "admin/base.html" %}
+{% load static %}
+{% block title %}پنل مدیریت | وبلاگ بومبرمن{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">مدیریت وبلاگ</a></h1>
+{% if user.is_anonymous %}
+  {% include "admin/color_theme_toggle.html" %}
+{% endif %}
+{% endblock %}
+{% block extrastyle %} <link rel="stylesheet" type="text/css" href="{% static 'css/override.css' %}" > {% endblock %}
+{% block nav-global %}{% endblock %}

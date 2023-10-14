@@ -1,0 +1,69 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        {% if request.user.is_authenticated == True %}
+            <a class="navbar-brand" href=" {% url "home:home" %} "><h2>hello {{ user.first_name }}<em>.</em></h2>
+            </a>
+            {% if user.profile.image %}
+                <a href=" {% url "home:home" %} "><span><img src="{{ user.profile.image.url }}" alt="profile" width="25"
+                                                             height="30"
+                                                             style="border-radius: 100%"></span></a>
+            {% else %}
+                <span><img src="{% static "images/ET0WJCb.png" %}" alt="profile" width="25" height="30"
+                           style="border-radius: 100%"></span>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts:editProfile' %}">edit</a>
+            </li>
+        {% else %}
+            <a class="navbar-brand"><h2>hello Guest(no login)<em>.</em></h2></a>
+        {% endif %}
+
+
+        {% if request.user.is_superuser %}
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/">Admin panel</a>
+            </li>
+        {% endif %}
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %} ">
+                    <a class="nav-link" href=" {% url "home:home" %} ">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                {% if request.user.is_authenticated == False %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
+                        <a class="nav-link" href="{% url 'accounts:register' %}">register</a>
+                    </li>
+
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a>
+
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">About Us</a>
+                </li>
+                <li class="nav-item{% if request.resolver_match.url_name == 'blogs' %} active{% endif %}">
+                    <a class="nav-link" href=" {% url "blog:blogs" %} ">Blog Entries</a>
+                </li>
+                {% if request.resolver_match.url_name == 'details' %}
+                    <li class="nav-item active">
+                        <a class="nav-link" href=" {{ articles.get_absolute_url }} ">post details</a>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'blog:contactUs' %}">Contact Us</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
