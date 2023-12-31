@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm, RegisterForm, EditYourProfile
@@ -8,6 +7,8 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from blog.models import ContactUs
 from django.urls import reverse_lazy
+from .models import Profile
+
 
 def register(request):
     if request.user.is_authenticated:
@@ -61,16 +62,20 @@ def user_login(request):
     else:
         form = LoginForm()
 
-
     return render(request, 'accounts/login.html', {'form': form})
 
 
 def EditProfile(request):
     user = request.user
+    try:
+        profile = user.profile
+    except Profile.DoesNotExist:
+        profile = Profile(user=user)
+
     form = EditYourProfile(instance=user)
 
     if request.method == 'POST':
-        form = EditYourProfile(data=request.POST, files=request.FILES, instance=user,)
+        form = EditYourProfile(data=request.POST, files=request.FILES, instance=profile)
 
         if form.is_valid():
             form.save()
@@ -83,7 +88,7 @@ def user_logout(request):
     return redirect('/')
 
 
-#------------------------------------------
+# ------------------------------------------
 
 
 class UserList(UserPassesTestMixin, ListView):
@@ -130,6 +135,7 @@ class MessageDeleteView(UserPassesTestMixin, DeleteView):
     model = ContactUs
     success_url = reverse_lazy('accounts:message-update')
     template_name = 'accounts/contactus_confirm_delete.html'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['user'] = self.request.user
