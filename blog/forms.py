@@ -2,7 +2,7 @@ from django import forms
 from django.forms import TextInput, Textarea, EmailInput
 from django.core.validators import ValidationError
 
-from blog.models import ContactUs
+from blog.models import ContactUs, Article
 
 
 # class ContactUs(forms.Form):
@@ -52,3 +52,12 @@ class MessageForm(forms.ModelForm):
                 attrs={'class': 'form-control', 'style': 'border-radius: 10px; padding: 10px; font-size: 12px;',
                        'placeholder': 'Enter email'}),
         }
+
+
+class ArticleForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = [ 'category', 'title', 'body', 'image']
+
+
+

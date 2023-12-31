@@ -32,7 +32,9 @@
                 <div class="col-lg-12">
                     <div class="blog-post">
                         <div class="blog-thumb">
-                            <img src="{{ artic.image.url }}" alt="{{ artic.title }}">
+                            {% if artic.image.url != 'none' %}
+                                <img src=" {{ artic.image.url }} " alt="{{ artic.title }}">
+                            {% endif %}
                         </div>
                         <div class="down-content">
                             <span>{{ artic.category.first }}</span>
@@ -58,15 +60,19 @@
                                             <div id="like-section">
                                                 {% if user.is_authenticated %}
                                                     {% if is_Liked %}
-                                                        <li><a onclick="Like('{{ artic.slug }}', '{{ artic.id }}')" ><i id="liked"
+                                                        <li><a onclick="Like('{{ artic.slug }}', '{{ artic.id }}')"><i
+                                                                id="liked"
                                                                 style="font-size: 35px"
-                                                                class="fa fa-heart"></i></a><span id="count" >{{ artic.Likes.all.count }}</span>
+                                                                class="fa fa-heart"></i></a><span
+                                                                id="count">{{ artic.Likes.all.count }}</span>
                                                         </li>
                                                     {% else %}
 
-                                                        <li><a onclick="Like('{{ artic.slug }}', '{{ artic.id }}')" ><i id="liked"
+                                                        <li><a onclick="Like('{{ artic.slug }}', '{{ artic.id }}')"><i
+                                                                id="liked"
                                                                 style="font-size: 35px"
-                                                                class="fa fa-heart-o"></i></a><span id="count" >{{ artic.Likes.all.count }}</span>
+                                                                class="fa fa-heart-o"></i></a><span
+                                                                id="count">{{ artic.Likes.all.count }}</span>
                                                         </li>
                                                     {% endif %}
                                                 {% else %}

@@ -13,7 +13,9 @@
             <div class="owl-banner owl-carousel">
                 {% for article in articles %}
                     <div class="item">
-                        <img src=" {{ article.image.url }} " alt="{{ article.title }}">
+                        {% if articles2.image.url != 'none' %}
+                                	<img src=" {{ articles2.image.url }} " alt="{{ articles2.title }}">
+                                {% endif %}
                         <div class="item-content">
                             <div class="main-content">
                                 <div class="meta-category">
@@ -61,8 +63,10 @@
 
                         <div class="blog-post">
                             <div class="blog-thumb">
+                                {% if articles2.image.url != 'none' %}
+                                	<img src=" {{ articles2.image.url }} " alt="{{ articles2.title }}">
+                                {% endif %}
 
-                                <img src=" {{ articles2.image.url }} " alt="{{ articles2.title }}">
                             </div>
                             <div class="down-content">
                                 <span>{{ articles2.category.first }}</span>

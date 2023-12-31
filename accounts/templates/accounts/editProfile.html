@@ -33,7 +33,7 @@
                                         <h2>Edit your Profile</h2>
                                     </div>
                                     <div class="content">
-                                        <form  enctype="multipart/form-data" id="contact" action="" method="post">
+                                        <form method="POST" enctype="multipart/form-data">
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                 </div>
@@ -44,7 +44,19 @@
                                                 <div class="col-lg-12">
                                                     {% csrf_token %}
                                                     {{ form }}
+
                                                 </div>
+                                                {% if form.errors %}
+                                                    <div class="col-lg-12">
+                                                        <ul class="errorlist">
+                                                            {% for field in form %}
+                                                                {% for error in field.errors %}
+                                                                    <li>{{ error }}</li>
+                                                                {% endfor %}
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
+                                                {% endif %}
                                                 <div class="col-lg-12">
                                                     <fieldset>
                                                         <button type="submit" id="form-submit" class="main-button">send

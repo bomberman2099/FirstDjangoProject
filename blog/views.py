@@ -7,7 +7,7 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic import DetailView
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
-
+from .forms import ArticleForm
 # class MyDetailView(DetailView):
 #     model = Article
 #     template_name = "blog/post-details.html"
@@ -44,9 +44,8 @@ def blogs_detail(request, slug):
             print(1)
         else:
             liked = False
-
-
-
+    else:
+        liked = False
     return render(request, "blog/post-details.html", {'comment_count':comment_count, "artic": context, "title": "post details","is_Liked": liked})
 
 def blogs(request):
@@ -114,3 +113,33 @@ def contacts(request):
 def test(request):
     return JsonResponse({'response': 'Liked'})
 
+
+
+def CreateArticle(request):
+    if request.method == 'POST':
+        form = ArticleForm(data=request.POST)
+        if form.is_valid():
+            print(1)
+            article = form.save(commit=False)
+            article.author = request.user
+            article.save()
+            # Redirect or do something else upon successful form submission
+            Article.objects.create(
+                author=request.user,
+                category=article.category,
+                title=article.title,
+                body=article.body,
+                image=article.image,
+            )
+            # print(request.user,
+            #     article.category,
+            #     article.title,
+            #     article.body,
+            #     article.image,)
+    else:
+        if request.user.is_authenticated:
+            form = ArticleForm()
+
+        else:
+            return redirect(reverse('accounts:login'))
+    return render(request, 'blog/contactUs.html', {'form': form})

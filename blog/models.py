@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.text import slugify
 
+
 # Many To Many
 # Article to User
 # Many To One
@@ -33,7 +34,7 @@ class Article(models.Model):
     category = models.ManyToManyField(Category, related_name="articles", verbose_name="دسته‌بندی")
     title = models.CharField(max_length=70, unique=True, verbose_name="عنوان")
     body = models.TextField(verbose_name="متن")
-    image = models.ImageField(upload_to='images/articles', verbose_name="تصویر")
+    image = models.ImageField(null=True, blank=True, upload_to='images/articles', verbose_name="تصویر")
     created = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ایجاد")
     updated = models.DateTimeField(auto_now=True, verbose_name="تاریخ بروزرسانی")
     slug = models.SlugField(null=True, unique=True)
@@ -56,6 +57,7 @@ class Article(models.Model):
         return format_html('<h3 style="color: red" >تصویر موجود نیست</h3>')
 
     showimage.short_description = "تصاویر"
+
     def __str__(self):
         return f"{self.title} - {self.body[:30]}"
 
@@ -63,7 +65,8 @@ class Article(models.Model):
 class Comments(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments', verbose_name="مقاله")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments', verbose_name="کاربر")
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name='replies', null=True, blank=True, verbose_name="پاسخ به")
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name='replies', null=True, blank=True,
+                               verbose_name="پاسخ به")
     body = models.TextField(verbose_name="متن")
     created = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ایجاد")
 
@@ -87,6 +90,8 @@ class Like(models.Model):
         verbose_name = "لایک"
         verbose_name_plural = "لایک ها"
         ordering = ("created_at",)
+
+
 class ContactUs(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name="کاربر")
     title = models.CharField(max_length=35, verbose_name="عنوان")

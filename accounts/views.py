@@ -71,6 +71,7 @@ def EditProfile(request):
 
     if request.method == 'POST':
         form = EditYourProfile(data=request.POST, files=request.FILES, instance=user,)
+
         if form.is_valid():
             form.save()
 

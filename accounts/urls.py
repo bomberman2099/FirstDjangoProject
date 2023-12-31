@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'accounts'
 
@@ -14,5 +15,5 @@ urlpatterns = [
     path('messages/<int:pk>/', views.MessageDetailView.as_view(), name='message-detail'),
     path('messages/<int:pk>/delete/', views.MessageDeleteView.as_view(), name='message-delete'),
 
-]
+]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

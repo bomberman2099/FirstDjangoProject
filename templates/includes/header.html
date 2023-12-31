@@ -6,8 +6,8 @@
             </a>
             {% if user.profile.image %}
                 <a href=" {% url "home:home" %} "><span><img src="{{ user.profile.image.url }}" alt="profile" width="25"
-                                                             height="30"
-                                                             style="border-radius: 100%"></span></a>
+                                                            height="30"
+                                                            style="border-radius: 100%"></span></a>
             {% else %}
                 <span><img src="{% static "images/ET0WJCb.png" %}" alt="profile" width="25" height="30"
                            style="border-radius: 100%"></span>
